@@ -30,12 +30,11 @@ public class PlayerPick : MonoBehaviour
         else
         {
             HoldPickedObject();
-
             float scroll = Input.GetAxis("Mouse ScrollWheel");
             currentDistance = Mathf.Clamp(currentDistance - scroll, minPickupDistance, maxPickupDistance);
         }
 
-        if (Input.GetMouseButtonUp(1) && pickedObject != null)
+        if (pickedObject != null && Input.GetMouseButtonUp(1))
         {
             DropObject();
         }
@@ -75,8 +74,6 @@ public class PlayerPick : MonoBehaviour
         {
             Vector3 targetPosition = m_camera.transform.position + m_camera.transform.forward * currentDistance;
             picked_rb.MovePosition(targetPosition);
-
-            previousPosition = pickedObject.transform.position;
         }
     }
 
@@ -95,8 +92,11 @@ public class PlayerPick : MonoBehaviour
         if (picked_rb != null)
         {
             Vector3 releaseVelocity = (pickedObject.transform.position - previousPosition) / Time.deltaTime;
-            picked_rb.velocity = releaseVelocity;
+            picked_rb.velocity = releaseVelocity / 50;
             Debug.Log(releaseVelocity);
+
+            picked_rb.isKinematic = false;
+            picked_rb.useGravity = true;
 
             pickedObject = null;
             picked_rb = null;
