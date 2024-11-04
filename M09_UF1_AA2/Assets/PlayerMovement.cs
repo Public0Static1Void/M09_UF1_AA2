@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         else if (sprint)
             sprint = false;
 
-        if (!on_ground && Input.GetKey(KeyCode.Space) && timer < 3 && jet)
+        if (!on_ground && Input.GetKey(KeyCode.Space) && timer < 1 && jet)
         {
             rb.AddForce(transform.up * (jump_force / 2), ForceMode.Acceleration);
         }
@@ -74,6 +74,9 @@ public class PlayerMovement : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
+        if (horizontal != 0 && on_ground && !sprint)
+            current_speed = speed * 0.75f;
+
         if (vertical > 0 && on_ground)
         {
             current_speed = speed;
@@ -85,8 +88,6 @@ public class PlayerMovement : MonoBehaviour
         else
             current_speed = speed * 0.5f;
 
-        if (horizontal != 0 && on_ground && !sprint)
-            current_speed = speed * 0.75f;
 
         Vector3 mov = new Vector3(horizontal, 0, vertical) * current_speed;
         Vector3 vel = transform.TransformDirection(mov);

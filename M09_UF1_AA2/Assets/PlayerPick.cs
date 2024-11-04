@@ -53,6 +53,7 @@ public class PlayerPick : MonoBehaviour
             {
                 pickedObject = hit.transform.gameObject;
                 picked_rb = pickedObject.GetComponent<Rigidbody>();
+                picked_rb.useGravity = false;
 
                 if (picked_rb != null)
                 {
